@@ -1,0 +1,59 @@
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@16.3.0/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16.3.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+  <script type="text/babel">
+    const state = { eventCount: 0, username: "" };
+
+    const App = () => {
+      return (
+        <div>
+          <h2>👽ALIEN TRACKER!👽</h2>
+          <h4>
+            Keep track of all the Aliens you see, and their names, with this
+            helpful app.
+          </h4>
+          <p>There have been {state.eventCount} alien spottings.</p>
+          <p>
+            Have you seen an alien? Click here:
+            <button onClick={increment}>👽</button>
+          </p>
+          <p> Most recent Alien's Name: {state.username}</p>
+          <p>
+            Name the alien:
+            <input onChange={updateUsername} onBlur={trackAliens} />
+            <br />
+            Check the console for a log of the aliens you've seen.
+          </p>
+        </div>
+      );
+    };
+
+    const trackAliens = event => {
+      console.log(
+        `You just saw Alien #${state.eventCount}! You named them ${state.username}.`
+      );
+    };
+
+    const updateUsername = event => {
+      setState({ username: event.target.value });
+    };
+
+    const increment = () => {
+      setState({
+        eventCount: state.eventCount + 1
+      });
+    };
+
+    const setState = newState => {
+      Object.assign(state, newState);
+      renderApp();
+    };
+
+    const renderApp = () => {
+      ReactDOM.render(<App />, document.getElementById("root"));
+    };
+    renderApp();
+  </script>
+</body>
