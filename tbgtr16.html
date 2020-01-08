@@ -1,0 +1,109 @@
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@16.3.0/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16.3.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+  <script type="text/babel">
+    class MyFancyForm extends React.Component {
+      static availableOptions = [
+        "apple",
+        "grape",
+        "cherry",
+        "orange",
+        "pear",
+        "peach",
+        "mango"
+      ];
+      state = { multiline: "", commaSeparated: "", multiSelect: [] };
+      handleCommaSeparatedChange = event => {
+        const { value } = event.target;
+        const allVals = value
+          .split(",")
+          .map(value => value.trim())
+          .filter(Boolean);
+        this.setState({
+          commaSeparated: value,
+          multiline: allVals.join("\n"),
+          multiSelect: allVals.filter(value =>
+            MyFancyForm.availableOptions.includes(value)
+          )
+        });
+      };
+      handleMultilineChange = event => {
+        const { value } = event.target;
+        const allVals = value
+          .split("\n")
+          .map(value => value.trim())
+          .filter(Boolean);
+        this.setState({
+          multiline: value,
+          commaSeparated: allVals.join(", "),
+          multiSelect: allVals.filter(value =>
+            MyFancyForm.availableOptions.includes(value)
+          )
+        });
+      };
+      handleMultiSelectChange = event => {
+        //I'm unhappy with how this works.
+        //For some reason <select multiple> isn't letting me actually select multiple options.
+        const allVals = Array.from(event.target.selectedOptions).map(
+          option => option.value
+        );
+        this.setState({
+          multiSelect: allVals,
+          multiline: allVals.join("\n"),
+          commaSeparated: allVals.join(", ")
+        });
+      };
+      render() {
+        const { commaSeparated, multiline, multiSelect } = this.state;
+        return (
+          <form>
+            <div>
+              <label>
+                comma separated values:
+                <br />
+                <input
+                  type="text"
+                  value={commaSeparated}
+                  onChange={this.handleCommaSeparatedChange}
+                />
+              </label>
+            </div>
+            <div>
+              <label>
+                multiline values:
+                <br />
+                <textarea
+                  value={multiline}
+                  rows={MyFancyForm.availableOptions.length}
+                  onChange={this.handleMultilineChange}
+                />
+              </label>
+            </div>
+            <div>
+              <label>
+                multiSelect values:
+                <br />
+                <select
+                  multiple
+                  value={multiSelect}
+                  size={MyFancyForm.availableOptions.length}
+                  onChange={this.handleMultiSelectChange}
+                >
+                  {MyFancyForm.availableOptions.map(optionValue => (
+                    <option key={optionValue} value={optionValue}>
+                      {optionValue}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+          </form>
+        );
+      }
+    }
+
+    ReactDOM.render(<MyFancyForm />, document.getElementById("root"));
+  </script>
+</body>
