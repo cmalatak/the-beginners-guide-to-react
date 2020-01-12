@@ -17,3 +17,9 @@
 - **tbgtr14.html** is a basic form built in react.
 
 - **tbgtr15.html** builds on the form to make it more dynamic.
+
+- **tbgtr16.html** builds on the form to control input values using the value property and event handlers.
+
+- **tbgtr17.html** renders a lists to a web page to learn why keys are necessary and how to use them correctly.
+
+- **tbgtr18.html** practice making asynchronis requests using axios and state to display data.
